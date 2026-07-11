@@ -1,94 +1,63 @@
 # Sistema de Gestão de Medicamentos
 
-Projeto frontend construído com Next.js (app router) que fornece uma interface para gerenciar usuários e medicamentos.
+Aplicação Next.js (App Router) para cadastro de usuários e controle de horários de medicamentos, feita para o Biochallenge UFAL/INATEL.
 
-## Visão geral
+## Funcionalidades
 
-Este repositório contém a aplicação frontend (Next.js + React) e a camada de persistência configurada com Prisma usando SQLite como banco local para desenvolvimento.
-
-O foco deste README é explicar rapidamente a estrutura do front-end e como o adapter de banco (Prisma) está configurado para rodar localmente.
+- Cadastro e login de usuários (NextAuth, credenciais + senha com hash via bcrypt).
+- Dashboard com lista de medicamentos do usuário logado.
+- Adicionar, editar e excluir medicamento (com confirmação antes de excluir).
+- Alterar senha (autenticado, exige a senha atual).
 
 ## Tecnologias principais
 
-- Next.js (App Router)
-- React + TypeScript
-- Tailwind CSS (estilos utilitários)
-- Prisma (ORM)
-- SQLite (base de dados local para desenvolvimento)
+- Next.js 15 (App Router) + React 19 + TypeScript
+- Tailwind CSS 4
+- NextAuth (estratégia JWT, provider de credenciais)
+- Prisma + SQLite (banco local de desenvolvimento)
+- Radix UI (diálogos modais)
 
-## Estrutura do front-end
+## Estrutura do projeto
 
-- `src/app/` — rotas e páginas da aplicação (App Router).
-- `src/components/` — componentes reusáveis (forms, listas, wrappers de sessão).
-- `src/app/api/` — endpoints API route handlers (server-side) que usam Prisma para acessar o banco.
+- `src/app/` — páginas e rotas (login, cadastro, dashboard, dashboard/alterar-senha) e as API route handlers em `src/app/api/`.
+- `src/components/` — componentes de feature (formulário/lista de medicamentos, cabeçalho do dashboard).
+- `src/components/ui/` — componentes de UI reutilizáveis (Button, TextField, Alert, FormCard, EmptyState, ConfirmDialog).
+- `src/lib/` — utilitários de servidor: singleton do Prisma (`prisma.ts`), config do NextAuth (`auth.ts`), helper de sessão (`session.ts`) e formatação de datas (`format.ts`).
+- `src/types/` — tipos compartilhados.
+- `prisma/schema.prisma` — modelos `User` e `Medicine`.
 
-As páginas usam componentes controlados por `react-hook-form` para validar e enviar dados ao backend.
+As telas usam componentes controlados com `useState` (sem biblioteca de formulários).
 
-## Banco de dados e adapter (Prisma + SQLite)
+## Variáveis de ambiente
 
-O projeto usa Prisma como ORM e um arquivo SQLite (`prisma/dev.db`) para persistência durante o desenvolvimento. O adaptador é simples e local, ideal para testes e prototipagem.
-
-Principais arquivos relacionados:
-- `prisma/schema.prisma` — esquema do banco (modelos `User` e `Medicine`).
-- `prisma/dev.db` — arquivo do banco SQLite (gerado após rodar as migrações).
-
-Fluxo recomendado para preparar o banco local:
-
-1. Defina a variável de ambiente `DATABASE_URL` no arquivo `.env` na raiz do projeto:
+Crie um arquivo `.env` na raiz do projeto:
 
 ```text
-DATABASE_URL="file:./prisma/dev.db"
+DATABASE_URL="file:./dev.db"
+NEXTAUTH_SECRET="uma-string-aleatoria-qualquer"
+NEXTAUTH_URL="http://localhost:3000"
 ```
 
-2. Gere o cliente Prisma (após alterar o schema ou ao clonar o repositório):
-
-```bash
-npx prisma generate
-```
-
-3. Rode as migrações (desenvolvimento):
-
-```bash
-npx prisma migrate dev --name init
-```
-
-Após isso o arquivo `prisma/dev.db` será criado/atualizado e o Prisma Client ficará disponível em `node_modules/@prisma/client`.
+- `DATABASE_URL` — caminho do banco SQLite, relativo à pasta `prisma/`.
+- `NEXTAUTH_SECRET` — chave usada pelo NextAuth para assinar a sessão (obrigatória em produção).
+- `NEXTAUTH_URL` — URL base da aplicação.
 
 ## Como executar localmente
-
-1. Clone o repositório e entre na pasta do projeto.
 
 ```bash
 git clone <repo-url>
 cd bioic
-```
 
-2. Instale as dependências:
-
-```bash
 npm install
-```
-
-3. Configure a variável de ambiente (`.env`) conforme explicado acima.
-
-4. Gere o Prisma Client e aplique migrações (se necessário):
-
-```bash
 npx prisma generate
 npx prisma migrate dev
-```
 
-5. Inicie o servidor de desenvolvimento:
-
-```bash
 npm run dev
 ```
 
-Abra `http://localhost:3000` no navegador para acessar a aplicação.
+Abra `http://localhost:3000` no navegador.
 
-## Notas rápidas
+## Notas
 
-- Em produção você deve trocar o `DATABASE_URL` para um banco gerenciado (Postgres, MySQL, etc.) e executar as migrações no ambiente adequado.
-- O esquema Prisma está em `prisma/schema.prisma`. Se fizer alterações no schema, rode `npx prisma migrate dev` e `npx prisma generate`.
-
----
+- Em produção, troque `DATABASE_URL` para um banco gerenciado (Postgres, MySQL, etc.) e rode as migrações no ambiente adequado.
+- Ao alterar `prisma/schema.prisma`, rode `npx prisma migrate dev` e `npx prisma generate` novamente.
