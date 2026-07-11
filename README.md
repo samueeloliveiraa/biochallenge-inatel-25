@@ -19,12 +19,12 @@ Aplicação Next.js (App Router) para cadastro de usuários e controle de horár
 
 ## Estrutura do projeto
 
-- `src/app/` — páginas e rotas (login, cadastro, dashboard, dashboard/alterar-senha) e as API route handlers em `src/app/api/`.
-- `src/components/` — componentes de feature (formulário/lista de medicamentos, cabeçalho do dashboard).
-- `src/components/ui/` — componentes de UI reutilizáveis (Button, TextField, Alert, FormCard, EmptyState, ConfirmDialog).
-- `src/lib/` — utilitários de servidor: singleton do Prisma (`prisma.ts`), config do NextAuth (`auth.ts`), helper de sessão (`session.ts`) e formatação de datas (`format.ts`).
-- `src/types/` — tipos compartilhados.
-- `prisma/schema.prisma` — modelos `User` e `Medicine`.
+- `src/app/`: páginas e rotas (login, cadastro, dashboard, dashboard/alterar-senha) e as API route handlers em `src/app/api/`.
+- `src/components/`: componentes de feature (formulário/lista de medicamentos, cabeçalho do dashboard).
+- `src/components/ui/`: componentes de UI reutilizáveis (Button, TextField, Alert, FormCard, EmptyState, ConfirmDialog).
+- `src/lib/`: utilitários de servidor: singleton do Prisma (`prisma.ts`), config do NextAuth (`auth.ts`), helper de sessão (`session.ts`) e formatação de datas (`format.ts`).
+- `src/types/`: tipos compartilhados.
+- `prisma/schema.prisma`: modelos `User` e `Medicine`.
 
 As telas usam componentes controlados com `useState` (sem biblioteca de formulários).
 
@@ -38,9 +38,9 @@ NEXTAUTH_SECRET="uma-string-aleatoria-qualquer"
 NEXTAUTH_URL="http://localhost:3000"
 ```
 
-- `DATABASE_URL` — caminho do banco SQLite, relativo à pasta `prisma/`.
-- `NEXTAUTH_SECRET` — chave usada pelo NextAuth para assinar a sessão (obrigatória em produção).
-- `NEXTAUTH_URL` — URL base da aplicação.
+- `DATABASE_URL`: caminho do banco SQLite, relativo à pasta `prisma/`.
+- `NEXTAUTH_SECRET`: chave usada pelo NextAuth para assinar a sessão (obrigatória em produção).
+- `NEXTAUTH_URL`: URL base da aplicação.
 
 ## Como executar localmente
 
