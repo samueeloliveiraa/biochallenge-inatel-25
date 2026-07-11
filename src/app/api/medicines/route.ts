@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
   try {
-    const userEmail = req.headers.get("X-User-Email");
-    
-    if (!userEmail) {
+    const user = await getCurrentUser();
+
+    if (!user) {
       return NextResponse.json(
         { message: "Autenticação necessária" },
         { status: 401 }
@@ -15,17 +14,6 @@ export async function POST(req: NextRequest) {
     }
 
     const { name, dosage, time, description } = await req.json();
-
-    const user = await prisma.user.findUnique({
-      where: { email: userEmail },
-    });
-
-    if (!user) {
-      return NextResponse.json(
-        { message: "Usuário não encontrado" },
-        { status: 404 }
-      );
-    }
 
     const medicine = await prisma.medicine.create({
       data: {
@@ -47,26 +35,14 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// Adicione este novo método para listagem
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
-    const userEmail = req.headers.get("X-User-Email");
-    
-    if (!userEmail) {
-      return NextResponse.json(
-        { message: "Autenticação necessária" },
-        { status: 401 }
-      );
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { email: userEmail },
-    });
+    const user = await getCurrentUser();
 
     if (!user) {
       return NextResponse.json(
-        { message: "Usuário não encontrado" },
-        { status: 404 }
+        { message: "Autenticação necessária" },
+        { status: 401 }
       );
     }
 
