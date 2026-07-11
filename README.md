@@ -57,6 +57,16 @@ npm run dev
 
 Abra `http://localhost:3000` no navegador.
 
+## Visualizar o banco de dados
+
+Pra ver o conteúdo das tabelas (`User` e `Medicine`) sem precisar instalar nada extra, use o Prisma Studio, que já vem com o Prisma do projeto:
+
+```bash
+npx prisma studio
+```
+
+Isso abre `http://localhost:5555` no navegador, com uma tela pra cada tabela, onde dá pra ver, filtrar e até editar/apagar linhas direto pela interface.
+
 ## Notas
 
 - Em produção, troque `DATABASE_URL` para um banco gerenciado (Postgres, MySQL, etc.) e rode as migrações no ambiente adequado.
