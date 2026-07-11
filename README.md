@@ -46,7 +46,7 @@ NEXTAUTH_URL="http://localhost:3000"
 
 ```bash
 git clone <repo-url>
-cd bioic
+cd biochallenge-inatel-25
 
 npm install
 npx prisma generate
